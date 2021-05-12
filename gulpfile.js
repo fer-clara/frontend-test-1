@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp = require('gulp'); 
 var cssnano = require('gulp-cssnano'); 
 var sass = require('gulp-sass'); 
@@ -15,23 +17,23 @@ gulp.task('serve', function() {
     })
 
     gulp.watch('./public/*.html', reload);
+    gulp.watch('./public/dist/css/*.css', reload);
+    gulp.watch('./public/dist/js/*.js', reload);
 })
 
 gulp.task('sass', function(){    
-    return gulp.src('public/stylesheets/style.scss')       
-        .pipe(sass()) // compila o sass      
-        .pipe(cssnano()) // minifica      
-        .pipe(gulp.dest('dist/css'))
-        .pipe(browserSync.reload({
-            stream: true
-        })) 
+    return gulp.src('./public/stylesheets/*.scss')
+        .pipe(concat('style.css'))        
+        .pipe(sass())      
+        .pipe(cssnano())      
+        .pipe(gulp.dest('./public/dist/css'))
 });
 
 gulp.task('js', function(){    
-    return gulp.src(['public/javascripts/*.js'])          
-        .pipe(concat('all.js')) // concatena      
-        .pipe(uglify())  // minifica     
-        .pipe(gulp.dest('dist/js')); 
+    return gulp.src(['./public/javascripts/*.js'])          
+        .pipe(concat('all.js'))      
+        .pipe(uglify())  
+        .pipe(gulp.dest('./public/dist/js')); 
 });
 
 gulp.task('watch', function(){       
